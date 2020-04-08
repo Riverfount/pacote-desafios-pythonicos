@@ -10,12 +10,26 @@ Exemplo: 'abcde', a metade da frente é 'abc' e a de trás é 'de'.
 Finalmente, dadas duas strings a e b, retorne uma string na forma:
 a-frente + b-frente + a-trás + b-trás
 """
+
+
+def string_divider(s):
+    if len(s) % 2 == 0:
+        s_1 = s[: int(len(s) / 2)]
+        s_2 = s[int(len(s) / 2) :]
+    else:
+        s_1 = s[: len(s) - (len(s) // 2)]
+        s_2 = s[len(s) - (len(s) // 2) :]
+    return s_1, s_2
+
+
 def front_back(a, b):
-    # +++ SUA SOLUÇÃO +++
-    return
+    a_1, a_2 = string_divider(a)
+    b_1, b_2 = string_divider(b)
+    return f"{a_1}{b_1}{a_2}{b_2}"
 
 
 # --- Daqui para baixo são apenas códigos auxiliáries de teste. ---
+
 
 def test(f, in_, expected):
     """
@@ -25,17 +39,17 @@ def test(f, in_, expected):
     out = f(*in_)
 
     if out == expected:
-        sign = '✅'
-        info = ''
+        sign = "✅"
+        info = ""
     else:
-        sign = '❌'
-        info = f'e o correto é {expected!r}'
+        sign = "❌"
+        info = f"e o correto é {expected!r}"
 
-    print(f'{sign} {f.__name__}{in_!r} retornou {out!r} {info}')
+    print(f"{sign} {f.__name__}{in_!r} retornou {out!r} {info}")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # Testes que verificam o resultado do seu código em alguns cenários.
-    test(front_back, ('abcd', 'xy'), 'abxcdy')
-    test(front_back, ('abcde', 'xyz'), 'abcxydez')
-    test(front_back, ('Kitten', 'Donut'), 'KitDontenut')
+    test(front_back, ("abcd", "xy"), "abxcdy")
+    test(front_back, ("abcde", "xyz"), "abcxydez")
+    test(front_back, ("Kitten", "Donut"), "KitDontenut")

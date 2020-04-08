@@ -9,7 +9,8 @@ Irá retornar: [1, 2, 3]
 """
 
 def remove_adjacent(nums):
-    # +++ SUA SOLUÇÃO +++
+    for num in nums:
+        
     return
 
 
