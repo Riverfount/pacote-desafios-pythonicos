@@ -59,7 +59,7 @@ def parse_file(file) -> Counter:
 def print_words(filename):
     line_parsed = parse_file(filename)
     for word in sorted(line_parsed.keys()):
-        print(f"{word}.{line_parsed[word]}")
+        print(f"{word} {line_parsed[word]}")
 
 
 def print_top(filename):
@@ -69,11 +69,10 @@ def print_top(filename):
         for k, v in sorted(line_parsed.items(), key=lambda item: item[1], reverse=True)
     }
     for word in line_parsed_ordered:
-        print(f"{word}.{line_parsed_ordered[word]}")
+        print(f"{word} {line_parsed_ordered[word]}")
 
 
-# A função abaixo chama print_words() ou print_top() de acordo com os
-# parêtros do programa.
+# A função abaixo chama print_words() ou print_top() de acordo com os parêtros do programa.
 def main():
     if len(sys.argv) != 3:
         print("Utilização: ./wordcount.py {--count | --topcount} file")
