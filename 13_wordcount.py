@@ -1,60 +1,94 @@
 """
-O main() abaixo já esta definido e completo. Ele chama as funções
-print_words() e print_top() que você escreveu.
+13. wordcount
 
-1. Para a flag --count, implemente a função print_words(filename) que conta
-quão frequentemente cada palavra aparace no texto e imprime
-word1 count1
-word2 count2
-...
+Este desafio é um programa que conta palavras de um arquivo qualquer de duas
+formas diferentes.
 
-Imprima a lista acima em ordem crescente por palavra(o Python ira ordenar
-a pontuação para vir antes das letras, sem problemas). Armazene todas as palavras
-em caixa baixa, assim, as palavras 'The' e 'the' irão contar como a mesma palavra.
+A. Lista todas as palavras por ordem alfabética indicando suas ocorrências.
 
-2. Para a flag --topcount, implemente a função print_top(filename), que é similar
-a print_words(), porém imprime apenas as 20 palavras mais comuns ordenadas, de 
-modo que a palavra mais comum aparece primeiro, seguida da segunda mais comum,
-e assim por diante.
+Ou seja...
 
-Use str.split() (sem argumentos) para fazer o split em todo espaço em branco.
+Dado um arquivo letras.txt contendo as palavras: A a C c c B b b B
+Quando você executa o programa: python wordcount.py --count letras.txt
+Ele deve imprimir todas as palavras em ordem alfabética seguidas
+do número de ocorrências.
 
-Workflow: Não construa todo o programa. Uma coisa de cada vez, imprime sua
-estrutura de dados e depois sys.exit(0). Quando isso estiver funcionando,
-tente seu proximo marco.
+Por exemplo:
 
-Opcional: defina uma função auxiliar que evita código duplicado dentro 
-de print_words() e print_top().
+$ python wordcount.py --count letras.txt
+a 2
+b 4
+c 3
+
+B. Lista as 20 palavras mais frequêntes indicando suas ocorrências.
+
+Ou seja...
+
+Dado um arquivo letras.txt contendo as palavras: A a C c c B b b B
+Quando você executa o programa: python wordcount.py --topcount letras.txt
+Ele deve imprimir as 20 palavras mais frequêntes seguidas
+do número de ocorrências, em ordem crescente de ocorrências.
+
+Por exemplo:
+
+$ python wordcount.py --topcount letras.txt
+b 4
+c 3
+a 2
+
+Abaixo já existe um esqueleto do programa para você preencher.
+
+Você encontrará a função main() chama as funções print_words() e
+print_top() de acordo com o parâmetro --count ou --topcount.
+
+Seu trabalho é implementar as funções print_words() e depois print_top().
 """
 
 import sys
+from collections import Counter
 
 
-# +++ SUA SOLUÇÃO +++
-# Defina as funções print_words(filename) e print_top(filename).
-# Você pode escrever uma função auxiliar para ajudar a ler o arquivo
-# e montar e retornar o dicioario word/count.
-# Depois print_words() e print_top() podem apenas invocar essa função.
+def parse_file(file) -> Counter:
+    with open("letras.txt", "r") as file:
+        for line in list(file.readlines()):
+            line_parsed = Counter([l.lower() for l in line])
+            del line_parsed[" "]
+    return line_parsed
 
-###
 
-# Este comando basico é disponibilizado, e invoca as funções print_words()
-# e print_top() que você deve definir.
+def print_words(filename):
+    line_parsed = parse_file(filename)
+    for word in sorted(line_parsed.keys()):
+        print(f"{word}.{line_parsed[word]}")
+
+
+def print_top(filename):
+    line_parsed = parse_file(filename)
+    line_parsed_ordered = {
+        k: v
+        for k, v in sorted(line_parsed.items(), key=lambda item: item[1], reverse=True)
+    }
+    for word in line_parsed_ordered:
+        print(f"{word}.{line_parsed_ordered[word]}")
+
+
+# A função abaixo chama print_words() ou print_top() de acordo com os
+# parêtros do programa.
 def main():
     if len(sys.argv) != 3:
-        print('Utilização: ./13_wordcount.py {--count | --topcount} file')
+        print("Utilização: ./wordcount.py {--count | --topcount} file")
         sys.exit(1)
 
     option = sys.argv[1]
     filename = sys.argv[2]
-    if option == '--count':
+    if option == "--count":
         print_words(filename)
-    elif option == '--topcount':
+    elif option == "--topcount":
         print_top(filename)
     else:
-        print('unknown option: ' + option)
+        print("unknown option: " + option)
         sys.exit(1)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
